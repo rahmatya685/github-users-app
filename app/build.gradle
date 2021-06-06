@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -15,7 +16,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "END_POINT", END_POINT
@@ -182,4 +183,16 @@ dependencies {
 
     //Fragment
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
+
+
+    //Dependency Injection
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    //Image loading
+    implementation "io.coil-kt:coil:1.0.0"
+
+
+    //MultiDex
+    implementation "androidx.multidex:multidex:$multidex_version"
 }

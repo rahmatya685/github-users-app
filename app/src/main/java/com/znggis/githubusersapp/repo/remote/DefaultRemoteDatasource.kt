@@ -2,14 +2,16 @@ package com.znggis.githubusersapp.repo.remote
 
 import com.znggis.githubusersapp.repo.remote.api.UserSearchApi
 import retrofit2.Retrofit
+import javax.inject.Inject
 
 /**
  * Default implementation of [RemoteDatasource]
  * @param retrofit retrofit object for service creation
  */
-class DefaultRemoteDatasource(retrofit: Retrofit) : RemoteDatasource {
-
-    private val api by lazy { retrofit.create(UserSearchApi::class.java) }
+class DefaultRemoteDatasource
+@Inject constructor(
+    private val api:UserSearchApi
+) : RemoteDatasource {
 
 
     override suspend fun search(

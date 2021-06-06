@@ -8,8 +8,9 @@ import com.znggis.githubusersapp.R
 import com.znggis.githubusersapp.databinding.ItemGithubuserBinding
 import com.znggis.githubusersapp.repo.model.GitHubItem
 import com.znggis.githubusersapp.ui.inflate
+import javax.inject.Inject
 
-class GitHubItemsAdapter :
+class GitHubItemsAdapter  @Inject constructor():
     PagingDataAdapter<GitHubItem, ItemViewHolder>(diffUtilCallback) {
 
     companion object {

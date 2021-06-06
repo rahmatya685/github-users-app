@@ -1,9 +1,8 @@
 package com.znggis.githubusersapp
 
 import android.app.Application
-import com.znggis.githubusersapp.repo.Repository
+import dagger.hilt.android.HiltAndroidApp
 
-class App : Application() {
-    val repo: Repository
-        get() = ServiceLocator.provideRepository(this)
-}
+
+@HiltAndroidApp
+class App : Application()

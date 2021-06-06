@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.znggis.githubusersapp.R
@@ -14,21 +15,30 @@ import com.znggis.githubusersapp.repo.model.Query
 import com.znggis.githubusersapp.ui.adapter.GitHubItemsAdapter
 import com.znggis.githubusersapp.ui.adapter.GitItemsLoadStateAdapter
 import com.znggis.githubusersapp.ui.adapter.asMergedLoadStates
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
+
+@AndroidEntryPoint
 class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
 
     private val binding: UserItemsFragmentBinding by viewBinding(
         UserItemsFragmentBinding::bind
     )
 
-    private val viewModel by viewModels<UserItemsViewModel> { getViewModelsFactory() }
 
-    private lateinit var adapter: GitHubItemsAdapter
+    private val viewModel: UserItemsViewModel by viewModels()
 
+
+    @Inject
+    lateinit var gitHubItemsAdapter: GitHubItemsAdapter
+
+    @Inject
+    lateinit var gitItemsLoadStateAdapter: GitItemsLoadStateAdapter
 
     @FlowPreview
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,14 +67,13 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
 
 
     private fun initAdapter() {
-        adapter = GitHubItemsAdapter()
-        binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
-            header = GitItemsLoadStateAdapter(adapter),
-            footer = GitItemsLoadStateAdapter(adapter)
+        binding.list.adapter = gitHubItemsAdapter.withLoadStateHeaderAndFooter(
+            header = gitItemsLoadStateAdapter,
+            footer = gitItemsLoadStateAdapter
         )
 
         lifecycleScope.launchWhenCreated {
-            adapter.loadStateFlow.collectLatest { loadStates ->
+            gitHubItemsAdapter.loadStateFlow.collectLatest { loadStates ->
                 binding.swipeRefresh.isRefreshing =
                     loadStates.mediator?.refresh is LoadState.Loading
             }
@@ -72,12 +81,12 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
 
         lifecycleScope.launchWhenCreated {
             viewModel.items.collectLatest {
-                adapter.submitData(it)
+                gitHubItemsAdapter.submitData(it)
             }
         }
 
         lifecycleScope.launchWhenCreated {
-            adapter.loadStateFlow
+            gitHubItemsAdapter.loadStateFlow
                 // Use a state-machine to track LoadStates such that we only transition to
                 // NotLoading from a RemoteMediator load if it was also presented to UI.
                 .asMergedLoadStates()
@@ -92,7 +101,7 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
     }
 
     private fun initSwipeToRefresh() {
-        binding.swipeRefresh.setOnRefreshListener { adapter.refresh() }
+        binding.swipeRefresh.setOnRefreshListener { gitHubItemsAdapter.refresh() }
     }
 
 

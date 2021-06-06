@@ -9,10 +9,12 @@ import com.znggis.githubusersapp.repo.model.Query
 import com.znggis.githubusersapp.repo.remote.RemoteDatasource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 const val PAGE_SIZE = 30
 
-class DefaultRepository(
+class DefaultRepository
+@Inject constructor(
     private val localDatasource: LocalDatasource,
     private val remoteDataSource: RemoteDatasource,
     private val networkHandler: NetworkHandler,

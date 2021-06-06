@@ -3,8 +3,9 @@ package com.znggis.githubusersapp.ui.adapter
 import android.view.ViewGroup
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
+import javax.inject.Inject
 
-class GitItemsLoadStateAdapter(
+class GitItemsLoadStateAdapter  @Inject constructor(
     private val adapter: GitHubItemsAdapter
 ) : LoadStateAdapter<NetworkStateItemViewHolder>() {
     override fun onBindViewHolder(holder: NetworkStateItemViewHolder, loadState: LoadState) {

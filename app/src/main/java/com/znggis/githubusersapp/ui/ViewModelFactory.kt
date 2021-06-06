@@ -8,25 +8,28 @@ import androidx.savedstate.SavedStateRegistryOwner
 import com.znggis.githubusersapp.executer.PostExecutionThreadImpl
 import com.znggis.githubusersapp.repo.Repository
 import java.lang.IllegalStateException
+import javax.inject.Inject
 
 
 /**
  * A factory for all ViewModels
  */
-class ViewModelFactory constructor(
-    private val repo: Repository,
-    owner: SavedStateRegistryOwner,
-    defaultArgs: Bundle?
-) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
 
-    override fun <T : ViewModel?> create(
-        key: String,
-        modelClass: Class<T>,
-        handle: SavedStateHandle
-    ) =with(modelClass){
-        when{
-            isAssignableFrom(UserItemsViewModel::class.java) -> UserItemsViewModel(handle,repo,PostExecutionThreadImpl())
-            else -> throw IllegalStateException("Unknown ViewModel class for $name")
-        }
-    } as T
-}
+
+//class ViewModelFactory @Inject constructor(
+//    private val repo: Repository,
+//    owner: SavedStateRegistryOwner,
+//    defaultArgs: Bundle?
+//) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
+//
+//    override fun <T : ViewModel?> create(
+//        key: String,
+//        modelClass: Class<T>,
+//        handle: SavedStateHandle
+//    ) =with(modelClass){
+//        when{
+//            isAssignableFrom(UserItemsViewModel::class.java) -> UserItemsViewModel(handle,repo,PostExecutionThreadImpl())
+//            else -> throw IllegalStateException("Unknown ViewModel class for $name")
+//        }
+//    } as T
+//}

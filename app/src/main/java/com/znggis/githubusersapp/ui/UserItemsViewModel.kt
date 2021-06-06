@@ -10,12 +10,15 @@ import com.znggis.githubusersapp.BuildConfig
 import com.znggis.githubusersapp.executer.PostExecutionThread
 import com.znggis.githubusersapp.repo.Repository
 import com.znggis.githubusersapp.repo.model.Query
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
-class UserItemsViewModel(
+@HiltViewModel
+class UserItemsViewModel @Inject  constructor(
     private val savedStateHandle: SavedStateHandle,
     private val repository: Repository,
     private val postExecutionThread: PostExecutionThread

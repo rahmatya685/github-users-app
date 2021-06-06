@@ -3,9 +3,14 @@ package com.znggis.githubusersapp.platform
 import android.content.Context
 import android.net.NetworkCapabilities
 import android.os.Build
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
-class NetworkHandler constructor(private val context: Context) {
+@Singleton
+class NetworkHandler
+@Inject constructor(@ApplicationContext private val context: Context) {
     fun isNetworkAvailable(): Boolean {
         val connectivityManager = context.connectivityManager
 

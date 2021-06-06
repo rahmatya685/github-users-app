@@ -4,8 +4,12 @@ import androidx.paging.PagingSource
 import androidx.room.withTransaction
 import com.znggis.githubusersapp.repo.local.entity.ItemEntity
 import com.znggis.githubusersapp.repo.local.entity.RemoteKeys
+import javax.inject.Inject
 
-class DefaultLocalDatasource(private val database: Database) : LocalDatasource {
+class DefaultLocalDatasource
+@Inject constructor(
+    private val database: Database
+) : LocalDatasource {
 
     private val itemDao = database.itemDao()
     private val remoteKeysDao = database.remoteKeysDao()

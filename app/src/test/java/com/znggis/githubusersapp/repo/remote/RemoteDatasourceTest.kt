@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
+import com.znggis.githubusersapp.repo.remote.api.UserSearchApi
 import com.znggis.githubusersapp.repo.remote.base.RetrofitCreator
 import com.znggis.githubusersapp.util.MockResponseTextReader
 import com.znggis.githubusersapp.util.SEARCH_RESULT_JSON
@@ -39,7 +40,7 @@ class RemoteDatasourceTest {
         val retrofit =
             RetrofitCreator(home.toUrl().toString())
                 .build()
-        remoteDatasource = DefaultRemoteDatasource(retrofit)
+        remoteDatasource = DefaultRemoteDatasource(retrofit.create(UserSearchApi::class.java))
     }
 
     @Test
