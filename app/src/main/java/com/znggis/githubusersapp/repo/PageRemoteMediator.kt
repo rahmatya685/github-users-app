@@ -80,6 +80,7 @@ class PageRemoteMediator(
                     nextKey
                 }
             }
+            Log.e("Quert=> ", query.toString())
 
             val data =
                 remoteDataSource.search(query.toString(), state.config.pageSize, page)
@@ -121,7 +122,6 @@ class PageRemoteMediator(
         return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { item ->
                 // Get the remote keys of the last item retrieved
-                Log.e("LastItemId=> ", item.id.toString())
                 localDatasource.remoteKeysItemId(item.itemId.toLong())
             }
     }

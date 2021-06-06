@@ -13,4 +13,12 @@ class QueryTest {
 
         assertThat(q.toString()).isEqualTo(queryString)
     }
+
+    @Test
+    fun query_isValid(){
+        assertThat(Query("queryString").isValid()).isTrue()
+        assertThat(Query("").isValid()).isFalse()
+        assertThat(Query(null).isValid()).isFalse()
+        assertThat(Query("123").isValid()).isFalse()
+    }
 }

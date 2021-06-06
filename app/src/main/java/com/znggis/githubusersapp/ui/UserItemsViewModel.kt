@@ -48,6 +48,7 @@ class UserItemsViewModel(
     private fun queryIsValid(
         query: Query
     ) = savedStateHandle.get<Query>(QUERY_KEY) != query
+            && query.isValid()
 
     fun setQuery(query: Query) {
 

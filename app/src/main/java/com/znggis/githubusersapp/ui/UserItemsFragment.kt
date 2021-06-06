@@ -2,22 +2,22 @@ package com.znggis.githubusersapp.ui
 
 
 import android.os.Bundle
-import android.util.Log
-import android.view.KeyEvent
 import android.view.View
- import androidx.fragment.app.Fragment
+import android.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.znggis.githubusersapp.R
 import com.znggis.githubusersapp.databinding.UserItemsFragmentBinding
+import com.znggis.githubusersapp.repo.model.Query
 import com.znggis.githubusersapp.ui.adapter.GitHubItemsAdapter
 import com.znggis.githubusersapp.ui.adapter.GitItemsLoadStateAdapter
 import com.znggis.githubusersapp.ui.adapter.asMergedLoadStates
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.*
 
 class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
 
@@ -30,9 +30,29 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
     private lateinit var adapter: GitHubItemsAdapter
 
 
+    @FlowPreview
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
+        initSwipeToRefresh()
+        initSearch()
+    }
+
+    @FlowPreview
+    @ExperimentalCoroutinesApi
+    private fun initSearch() {
+        callbackFlow<String?> {
+            binding.tvSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean = false
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    offer(newText)
+                    return true
+                }
+            })
+            awaitClose()
+        }.onEach { newText ->
+            viewModel.setQuery(Query(newText))
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
 
@@ -45,7 +65,8 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
 
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow.collectLatest { loadStates ->
-                binding.swipeRefresh.isRefreshing = loadStates.mediator?.refresh is LoadState.Loading
+                binding.swipeRefresh.isRefreshing =
+                    loadStates.mediator?.refresh is LoadState.Loading
             }
         }
 
@@ -66,15 +87,13 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
                 // Only react to cases where REFRESH completes i.e., NotLoading.
                 .filter { it.refresh is LoadState.NotLoading }
                 // Scroll to top is synchronous with UI updates, even if remote load was triggered.
-                .collect {  binding.list.scrollToPosition(0) }
+                .collect { binding.list.scrollToPosition(0) }
         }
     }
 
     private fun initSwipeToRefresh() {
         binding.swipeRefresh.setOnRefreshListener { adapter.refresh() }
     }
-
-
 
 
 }
