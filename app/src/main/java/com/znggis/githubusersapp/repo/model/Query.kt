@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 
 @Parcelize
-class Query(val text: String) : Parcelable {
+class Query(private val text: String) : Parcelable {
 
     override fun toString(): String {
         return text

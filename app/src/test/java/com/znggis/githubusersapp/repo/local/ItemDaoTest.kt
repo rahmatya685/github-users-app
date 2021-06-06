@@ -27,12 +27,15 @@ import org.robolectric.annotation.Config
 
 
 val itemEntity = ItemEntity(
-    id = 100,
+    itemId = 100,
     item = "Hid",
     avatarUrl = "amazing url",
     isFavourite = false,
     score = 100
-)
+).apply {
+    id = 100
+}
+
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -49,6 +52,7 @@ class ItemDaoTest {
 
     @Before
     fun initDb() {
+
         // using an in-memory database because the information stored here disappears when the
         // process is killed
         database = Room.inMemoryDatabaseBuilder(
@@ -97,7 +101,6 @@ class ItemDaoTest {
                     key = null,
                     loadSize = 2,
                     placeholdersEnabled = false,
-
                 )
             )
         ).isEqualTo(
