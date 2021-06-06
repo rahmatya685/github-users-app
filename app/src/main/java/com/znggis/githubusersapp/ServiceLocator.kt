@@ -38,7 +38,6 @@ object ServiceLocator {
         val repo = DefaultRepository(
             createLocalDataSource(context),
             createRemoteDataSource(),
-            PostExecutionThreadImpl(),
             NetworkHandler(context)
         )
         this.repo = repo

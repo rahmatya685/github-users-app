@@ -9,6 +9,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.google.common.truth.Truth.assertThat
 import com.znggis.githubusersapp.repo.local.entity.RemoteKeys
+import com.znggis.githubusersapp.util.DbFactory
+import com.znggis.githubusersapp.util.ItemFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -44,13 +46,7 @@ class LocalDatasourceTest {
     @ExperimentalCoroutinesApi
     @Before
     fun setup() {
-        database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            Database::class.java
-        )
-            .allowMainThreadQueries()
-            .build()
-
+        database =  DbFactory.buildDb()
         dataSource = DefaultLocalDatasource(
             database
         )
@@ -65,6 +61,7 @@ class LocalDatasourceTest {
 
     @Test
     fun insertItems_getList_checkEquality() = runBlocking {
+        val itemEntity = ItemFactory.generateItem()
         //WHEN - inserting items
         dataSource.insertItems(listOf(itemEntity))
 
@@ -94,6 +91,7 @@ class LocalDatasourceTest {
 
     @Test
     fun deleteItems_getList_checkIsEmpty() = runBlocking {
+        val itemEntity = ItemFactory.generateItem()
         //WHEN - deleting items
         dataSource.insertItems(listOf(itemEntity))
         dataSource.deleteAllItems()

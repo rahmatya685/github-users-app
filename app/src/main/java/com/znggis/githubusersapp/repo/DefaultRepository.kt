@@ -15,7 +15,6 @@ const val PAGE_SIZE = 30
 class DefaultRepository(
     private val localDatasource: LocalDatasource,
     private val remoteDataSource: RemoteDatasource,
-    private val dispatcher: PostExecutionThread,
     private val networkHandler: NetworkHandler,
 ) : Repository {
 
@@ -29,7 +28,6 @@ class DefaultRepository(
             query,
             localDatasource,
             remoteDataSource,
-            dispatcher,
             networkHandler
         )
     ) {

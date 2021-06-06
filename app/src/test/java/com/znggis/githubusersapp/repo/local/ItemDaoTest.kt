@@ -11,6 +11,8 @@ import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
 import com.znggis.githubusersapp.repo.local.entity.ItemEntity
+import com.znggis.githubusersapp.util.DbFactory
+import com.znggis.githubusersapp.util.ItemFactory
 import com.znggis.githubusersapp.util.MainCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -26,15 +28,7 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
 
-val itemEntity = ItemEntity(
-    itemId = 100,
-    item = "Hid",
-    avatarUrl = "amazing url",
-    isFavourite = false,
-    score = 100
-).apply {
-    id = 100
-}
+
 
 
 @ExperimentalCoroutinesApi
@@ -52,13 +46,9 @@ class ItemDaoTest {
 
     @Before
     fun initDb() {
-
         // using an in-memory database because the information stored here disappears when the
         // process is killed
-        database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            Database::class.java
-        ).allowMainThreadQueries().build()
+        database = DbFactory.buildDb()
     }
 
     @After
@@ -67,6 +57,7 @@ class ItemDaoTest {
     @Test
     fun insertItemAndGetById() = runBlockingTest {
         // GIVEN - insert an item
+        val itemEntity = ItemFactory.generateItem()
         database.itemDao().insert(itemEntity)
 
         // WHEN - Get the item by id from the database
@@ -86,6 +77,7 @@ class ItemDaoTest {
 
     @Test
     fun insertWithReplaceStrategy() = runBlocking {
+        val itemEntity = ItemFactory.generateItem()
         // GIVEN - insert  task A
         database.clearAllTables()
         database.itemDao().insert(itemEntity)
