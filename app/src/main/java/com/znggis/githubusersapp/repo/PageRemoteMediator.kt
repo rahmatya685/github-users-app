@@ -31,13 +31,6 @@ class PageRemoteMediator(
         ItemDtoToItemEntity()
 ) : RemoteMediator<Int, ItemEntity>() {
 
-
-    override suspend fun initialize(): InitializeAction {
-        // Require that remote REFRESH is launched on initial load and succeeds before launching
-        // remote PREPEND / APPEND.
-        return InitializeAction.LAUNCH_INITIAL_REFRESH
-    }
-
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, ItemEntity>
@@ -82,8 +75,11 @@ class PageRemoteMediator(
             }
             Log.e("Quert=> ", query.toString())
 
-            val data =
-                remoteDataSource.search(query.toString(), state.config.pageSize, page)
+            val data = remoteDataSource.search(
+                query.toString(),
+                state.config.pageSize,
+                page
+            )
 
             val endOfPaginationReached = data.items.isEmpty()
 
@@ -113,7 +109,6 @@ class PageRemoteMediator(
         }
 
     }
-
 
 
     private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, ItemEntity>): RemoteKeys? {

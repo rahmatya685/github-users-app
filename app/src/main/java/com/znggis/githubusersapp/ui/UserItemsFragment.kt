@@ -6,14 +6,15 @@ import android.view.View
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.znggis.githubusersapp.R
-import com.znggis.githubusersapp.databinding.FragmentUserItemDetailBinding
 import com.znggis.githubusersapp.databinding.UserItemsFragmentBinding
+import com.znggis.githubusersapp.repo.model.GitHubItem
 import com.znggis.githubusersapp.repo.model.Query
+import com.znggis.githubusersapp.ui.adapter.EventType
 import com.znggis.githubusersapp.ui.adapter.GitHubItemsAdapter
 import com.znggis.githubusersapp.ui.adapter.GitItemsLoadStateAdapter
 import com.znggis.githubusersapp.ui.adapter.asMergedLoadStates
@@ -33,7 +34,6 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
         UserItemsFragmentBinding::bind
     )
 
-
     private val viewModel: UserItemsViewModel by viewModels()
 
 
@@ -43,8 +43,6 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
     @Inject
     lateinit var gitItemsLoadStateAdapter: GitItemsLoadStateAdapter
 
-    @ExperimentalCoroutinesApi
-    @FlowPreview
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
@@ -55,6 +53,7 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
     @FlowPreview
     @ExperimentalCoroutinesApi
     private fun initSearch() {
+
         callbackFlow<String?> {
             binding.tvSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean = false
@@ -76,20 +75,20 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
             footer = gitItemsLoadStateAdapter
         )
 
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launchWhenResumed {
             gitHubItemsAdapter.loadStateFlow.collectLatest { loadStates ->
                 binding.swipeRefresh.isRefreshing =
                     loadStates.mediator?.refresh is LoadState.Loading
             }
         }
 
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launchWhenResumed {
             viewModel.items.collectLatest {
                 gitHubItemsAdapter.submitData(it)
             }
         }
 
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launchWhenResumed {
             gitHubItemsAdapter.loadStateFlow
                 // Use a state-machine to track LoadStates such that we only transition to
                 // NotLoading from a RemoteMediator load if it was also presented to UI.
@@ -103,14 +102,36 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
                 .collect { binding.list.scrollToPosition(0) }
         }
         gitHubItemsAdapter.clickListener = {
-            val action = UserItemsFragmentDirections.actionUserItemsFrgToUserItemDetailFrg(it)
-            findNavController().navigate(action)
+            when (it) {
+                is EventType.OnFavouriteClicked -> viewModel.toggleItemFavourite(it.gitHubItem)
+                is EventType.ShowDetail -> showDetailFrg(it.gitHubItem)
+            }
         }
+        lifecycleScope.launchWhenResumed {
+
+            viewModel.lastFirstVisiblePosition?.let {
+                (binding.list.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(it,0)
+            }
+        }
+    }
+
+    private fun showDetailFrg(gitHubItem: GitHubItem) {
+        val action = UserItemsFragmentDirections.actionUserItemsFrgToUserItemDetailFrg(gitHubItem)
+        findNavController().navigate(action)
     }
 
     private fun initSwipeToRefresh() {
         binding.swipeRefresh.setOnRefreshListener { gitHubItemsAdapter.refresh() }
     }
+
+    override fun onStop() {
+        super.onStop()
+        val   lastFirstVisiblePosition =
+            (binding.list.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+        viewModel.setScrollPosition(lastFirstVisiblePosition)
+    }
+
+
 
 
 }

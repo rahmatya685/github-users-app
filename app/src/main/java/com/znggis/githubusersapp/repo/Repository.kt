@@ -10,4 +10,6 @@ import kotlinx.coroutines.flow.Flow
  */
 interface Repository {
     fun search(query: Query): Flow<PagingData<GitHubItem>>
+    suspend fun toggleItemFavourite(item: GitHubItem)
+    fun getItemInfo(it: Int): Flow<GitHubItem?>
 }

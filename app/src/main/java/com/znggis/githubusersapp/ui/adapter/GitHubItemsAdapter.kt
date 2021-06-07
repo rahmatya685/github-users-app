@@ -15,14 +15,13 @@ class GitHubItemsAdapter @Inject constructor(
     var imageLoader: ImageLoader
 ) : PagingDataAdapter<GitHubItem, ItemViewHolder>(diffUtilCallback) {
 
-    internal var clickListener: (GitHubItem) -> Unit = { _ -> }
-
+    internal var clickListener: (EventType) -> Unit = { _ -> }
 
     companion object {
         val diffUtilCallback: DiffUtil.ItemCallback<GitHubItem>
             get() = object : DiffUtil.ItemCallback<GitHubItem>() {
                 override fun areItemsTheSame(oldItem: GitHubItem, newItem: GitHubItem): Boolean {
-                    return oldItem === newItem && oldItem.id == newItem.id
+                    return oldItem == newItem
                 }
 
                 override fun areContentsTheSame(
@@ -54,8 +53,8 @@ class GitHubItemsAdapter @Inject constructor(
         }
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) =
-        holder.bind(getItem(position), clickListener,imageLoader)
-
-
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int)
+    {
+        holder.bind(getItem(position), clickListener, imageLoader)
+    }
 }

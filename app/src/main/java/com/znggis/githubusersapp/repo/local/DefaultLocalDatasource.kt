@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.room.withTransaction
 import com.znggis.githubusersapp.repo.local.entity.ItemEntity
 import com.znggis.githubusersapp.repo.local.entity.RemoteKeys
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class DefaultLocalDatasource
@@ -35,5 +36,13 @@ class DefaultLocalDatasource
     override suspend fun insertAllKeys(keys: List<RemoteKeys>) =
         remoteKeysDao.insertAll(keys)
 
+    override suspend fun toggleItemFav(itemLocalId: Int) {
+        itemDao.findById(itemLocalId)?.let {
+            itemDao.toggleItemFav(itemLocalId, if (it.isFavourite) 0 else 1)
+        }
+    }
+
+    override fun findItem(itemId: Int):
+            Flow<ItemEntity?> = itemDao.findByIdFlow(itemId)
 
 }
