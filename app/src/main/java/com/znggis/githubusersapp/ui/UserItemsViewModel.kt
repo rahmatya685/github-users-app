@@ -63,7 +63,8 @@ class UserItemsViewModel @Inject constructor(
 
     private fun queryIsValid(
         query: Query
-    ) = savedStateHandle.get<Query>(QUERY_KEY) != query
+    ) = savedStateHandle.getLiveData<Query>(QUERY_KEY)
+        .value.toString() != query.toString()
             && query.isValid()
 
     fun setQuery(query: Query) {

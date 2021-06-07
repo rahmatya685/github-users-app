@@ -45,15 +45,15 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initSearch()
         initAdapter()
         initSwipeToRefresh()
-        initSearch()
+
     }
 
     @FlowPreview
     @ExperimentalCoroutinesApi
     private fun initSearch() {
-
         callbackFlow<String?> {
             binding.tvSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean = false
