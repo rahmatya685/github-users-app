@@ -7,8 +7,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.google.common.truth.Truth.assertThat
 import com.znggis.githubusersapp.repo.local.entity.RemoteKeys
-import java.com.znggis.githubusersapp.util.DbFactory
-import java.com.znggis.githubusersapp.util.ItemFactory
+import com.znggis.githubusersapp.util.DbFactory
+import com.znggis.githubusersapp.util.ItemFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

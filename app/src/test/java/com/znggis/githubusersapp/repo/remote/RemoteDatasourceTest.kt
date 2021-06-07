@@ -6,8 +6,8 @@ import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import com.znggis.githubusersapp.repo.remote.api.UserSearchApi
 import com.znggis.githubusersapp.repo.remote.base.RetrofitCreator
-import java.com.znggis.githubusersapp.util.MockResponseTextReader
-import java.com.znggis.githubusersapp.util.SEARCH_RESULT_JSON
+import com.znggis.githubusersapp.util.MockResponseTextReader
+import com.znggis.githubusersapp.util.SEARCH_RESULT_JSON
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse

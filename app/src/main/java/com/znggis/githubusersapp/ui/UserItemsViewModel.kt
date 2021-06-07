@@ -1,10 +1,8 @@
 package com.znggis.githubusersapp.ui
 
-import android.os.Parcelable
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.znggis.githubusersapp.BuildConfig
 import com.znggis.githubusersapp.executer.PostExecutionThread
 import com.znggis.githubusersapp.repo.Repository
 import com.znggis.githubusersapp.repo.model.GitHubItem

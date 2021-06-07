@@ -1,4 +1,4 @@
-package java.com.znggis.githubusersapp.util
+package com.znggis.githubusersapp.util
 
 import com.znggis.githubusersapp.repo.local.entity.ItemEntity
 

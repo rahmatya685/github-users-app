@@ -1,4 +1,4 @@
-package java.com.znggis.githubusersapp.util
+package com.znggis.githubusersapp.util
 
 import com.google.gson.Gson
 import com.znggis.githubusersapp.repo.remote.dto.user.UserSearchResp
