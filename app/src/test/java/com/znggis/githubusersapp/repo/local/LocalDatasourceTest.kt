@@ -3,14 +3,12 @@ package com.znggis.githubusersapp.repo.local
 import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagingSource
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.google.common.truth.Truth.assertThat
 import com.znggis.githubusersapp.repo.local.entity.RemoteKeys
-import com.znggis.githubusersapp.util.DbFactory
-import com.znggis.githubusersapp.util.ItemFactory
+import java.com.znggis.githubusersapp.util.DbFactory
+import java.com.znggis.githubusersapp.util.ItemFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

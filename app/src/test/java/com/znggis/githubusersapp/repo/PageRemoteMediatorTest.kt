@@ -14,8 +14,8 @@ import com.znggis.githubusersapp.repo.local.entity.ItemEntity
 import com.znggis.githubusersapp.repo.local.entity.RemoteKeys
 import com.znggis.githubusersapp.repo.model.Query
 import com.znggis.githubusersapp.repo.remote.RemoteDatasource
-import com.znggis.githubusersapp.util.DbFactory
-import com.znggis.githubusersapp.util.LoadItemsDto
+import java.com.znggis.githubusersapp.util.DbFactory
+import java.com.znggis.githubusersapp.util.LoadItemsDto
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -100,6 +100,7 @@ class PageRemoteMediatorTest {
                         nextKey = 2, prevKey = null
                     )
                 })
+
             localDatasource.insertItems(localData)
         }
     }

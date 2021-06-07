@@ -1,4 +1,4 @@
-package com.znggis.githubusersapp.util
+package java.com.znggis.githubusersapp.util
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider

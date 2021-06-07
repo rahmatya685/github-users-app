@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -17,7 +18,8 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        testInstrumentationRunner "com.znggis.githubusersapp.CustomTestRunner"
 
         buildConfigField "String", "END_POINT", END_POINT
 
@@ -89,7 +91,6 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recyclerView_version"
 
 
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -159,11 +160,11 @@ dependencies {
 
     implementation "androidx.test.espresso:espresso-idling-resource:$espresso_version"
 
+
     //DB
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
-
 
 
     //Pagination
@@ -171,11 +172,10 @@ dependencies {
     testImplementation "androidx.paging:paging-common-ktx:$paging_version"
 
 
-
     //navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
 
     //MultiDex
@@ -189,10 +189,21 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
+    // Hilt Test
+    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    testAnnotationProcessor "com.google.dagger:hilt-android-compiler::$hilt_version"
+    androidTestAnnotationProcessor "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+
     //Image loading
     implementation "io.coil-kt:coil:1.0.0"
 
 
     //MultiDex
     implementation "androidx.multidex:multidex:$multidex_version"
+
+    implementation 'androidx.activity:activity-ktx:1.3.0-beta01'
 }

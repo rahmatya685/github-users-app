@@ -9,5 +9,18 @@
         android:id="@+id/userItemsFragment"
         android:name="com.znggis.githubusersapp.ui.UserItemsFragment"
         android:label="user_items_fragment"
-        tools:layout="@layout/user_items_fragment" />
+        tools:layout="@layout/user_items_fragment">
+        <action
+            android:id="@+id/action_userItemsFrg_to_userItemDetailFrg"
+            app:destination="@id/userItemDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userItemDetailFragment"
+        android:name="com.znggis.githubusersapp.ui.UserItemDetailFragment"
+        android:label="UserItemDetailFragment">
+        <argument
+            android:name="item"
+            app:argType="com.znggis.githubusersapp.repo.model.GitHubItem"
+            app:nullable="false" />
+    </fragment>
 </navigation>

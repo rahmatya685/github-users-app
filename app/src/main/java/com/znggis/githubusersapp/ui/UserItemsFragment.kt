@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.znggis.githubusersapp.R
+import com.znggis.githubusersapp.databinding.FragmentUserItemDetailBinding
 import com.znggis.githubusersapp.databinding.UserItemsFragmentBinding
 import com.znggis.githubusersapp.repo.model.Query
 import com.znggis.githubusersapp.ui.adapter.GitHubItemsAdapter
@@ -26,6 +28,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
 
+
     private val binding: UserItemsFragmentBinding by viewBinding(
         UserItemsFragmentBinding::bind
     )
@@ -40,6 +43,7 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
     @Inject
     lateinit var gitItemsLoadStateAdapter: GitItemsLoadStateAdapter
 
+    @ExperimentalCoroutinesApi
     @FlowPreview
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -97,6 +101,10 @@ class UserItemsFragment : Fragment(R.layout.user_items_fragment) {
                 .filter { it.refresh is LoadState.NotLoading }
                 // Scroll to top is synchronous with UI updates, even if remote load was triggered.
                 .collect { binding.list.scrollToPosition(0) }
+        }
+        gitHubItemsAdapter.clickListener = {
+            val action = UserItemsFragmentDirections.actionUserItemsFrgToUserItemDetailFrg(it)
+            findNavController().navigate(action)
         }
     }
 

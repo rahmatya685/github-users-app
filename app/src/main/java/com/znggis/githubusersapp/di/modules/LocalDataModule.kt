@@ -1,4 +1,4 @@
-package com.znggis.vehiclesonmapapp.di.module
+package com.znggis.githubusersapp.di.modules
 
 import android.content.Context
 import androidx.room.Room
